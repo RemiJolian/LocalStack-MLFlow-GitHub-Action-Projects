@@ -1,5 +1,5 @@
 scikit-learn
-python
+python==3.12.0
 mlflow
 boto3
 
