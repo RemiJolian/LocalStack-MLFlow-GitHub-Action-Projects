@@ -56,5 +56,5 @@ if not s3_resource.Bucket(bucket_name) in s3_resource.buckets.all():
 # Upload model file to S3 bucket
 s3_resource.Bucket(bucket_name).upload_file('model.pkl', 'models/model.pkl')
 
-# Upload accuracy.txt to S3 bucket
+# Upload accuracy.txt to S3 bucket.
 # s3_resource.Bucket(bucket_name).upload_file('accuracy.txt', 'models/accuracy.txt')
