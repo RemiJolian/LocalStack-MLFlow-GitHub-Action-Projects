@@ -19,10 +19,10 @@ jobs:
           - 4566:4566  # S3 and other services on LocalStack
 
     - name: Set AWS Credentials for LocalStack
-    run: |
-      export AWS_ACCESS_KEY_ID=test
-      export AWS_SECRET_ACCESS_KEY=test
-      export AWS_DEFAULT_REGION=us-east-1
+      run: |
+        export AWS_ACCESS_KEY_ID=test
+        export AWS_SECRET_ACCESS_KEY=test
+        export AWS_DEFAULT_REGION=us-east-1
       
 
     # env:
