@@ -12,19 +12,7 @@ mlflow.set_experiment("Basic-DecisionTree")
 #mlflow.set_tracking_uri("My-Machine-Learning-Projects\My-Proj1-LocalStack-MLFlow-GitHub-Action\mlruns")
 mlflow.set_tracking_uri("http://localhost:5000")
 
-# Get the directory of the current script
-#script_dir = os.path.dirname(os.path.abspath(__file__))
-
-# File path for the output file in the same directory
-#output_file_path = os.path.join(script_dir, 'model.pkl')
-
-# Specify S3 bucket and path for saving the model artifacts
-#artifact_path = "s3:/my-test-bucket/decision_tree_model"
-
 #X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
-
-# if not os.path.exists("tmp"):
-#     os.makedirs("tmp")
 
 # Load dataset
 iris = load_iris()
