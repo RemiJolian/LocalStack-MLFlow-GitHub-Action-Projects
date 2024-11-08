@@ -45,7 +45,7 @@ jobs:
 
       - name: Set Up LocalStack S3 Bucket
         run: |
-          aws --endpoint-url=http://localhost:4566 s3 mb s3://my-iris-bucket
+          aws --endpoint-url=http://127.0.0.1:4566 s3 mb s3://my-iris-bucket
 
       - name: Run Training Script
         run: python project-1/train_model.py
