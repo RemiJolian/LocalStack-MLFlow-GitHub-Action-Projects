@@ -10,7 +10,7 @@ import boto3
 mlflow.set_experiment("Basic-DecisionTree")
 
 #mlflow.set_tracking_uri("My-Machine-Learning-Projects\My-Proj1-LocalStack-MLFlow-GitHub-Action\mlruns")
-mlflow.set_tracking_uri("http://localhost:5000")
+mlflow.set_tracking_uri("http://127.0.0.1:5000")
 
 #X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
@@ -46,7 +46,7 @@ with mlflow.start_run():
     print(f"Accuracy of training: {accuracy_train}")
 
 # Initialize S3 resource to upload the .pkl file to LocalStack's S3
-s3_resource = boto3.resource('s3', endpoint_url='http://localhost:4566')
+s3_resource = boto3.resource('s3', endpoint_url='http://127.0.0.1:4566')
 
 bucket_name = "my-iris-bucket"
 
