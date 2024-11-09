@@ -57,7 +57,7 @@ jobs:
 
 # _________________________________________________________________________________
 
-# name: Train and Track Model with MLflow
+# name: Train and Track Model with MLflow #
 
 # on:
 #   push:
