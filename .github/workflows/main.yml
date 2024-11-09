@@ -3,7 +3,7 @@ name: MLflow Model Tracking
 on:
   push:
     branches:
-      - main  # Change this to your default branch if necessary
+      - main  
 
 jobs:
   build:
