@@ -1,91 +1,38 @@
-## Yaml workflow file
-name: MLflow-LocalStack Tracking
+
+name: MLflow Model Tracking
 
 on:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
+      - main  
 
 jobs:
-  run-mlflow:
+  build:
     runs-on: ubuntu-latest
 
-    services:
-      localstack:
-        image: localstack/localstack
-        ports:
-          - 4566:4566
-          - 4571:4571
-        options: --entrypoint=/bin/sh -c "localstack start"
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.8
+      - name: Set up Python environment
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'  # Specify your Python version
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r project-1/requirements.txt
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt  
 
-    - name: Configure AWS CLI
-      run: |
-        aws configure set aws_access_key_id test
-        aws configure set aws_secret_access_key test
-        aws configure set default.region us-east-1
-        aws configure set output json
-
-    - name: Create S3 bucket in LocalStack
-      run: |
-        aws --endpoint-url=http://localhost:4566 s3 mb s3://my-artifacts
-
-    - name: Run MLflow script
-      env:
-        MLFLOW_S3_ENDPOINT_URL: http://localhost:4566
-      run: |
-        python train_model.py
-# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-# name: MLflow Model Tracking
-
-# on:
-#   push:
-#     branches:
-#       - main  
-
-# jobs:
-#   build:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2
-
-#       - name: Set up Python environment
-#         uses: actions/setup-python@v2
-#         with:
-#           python-version: '3.8'  # Specify your Python version
-
-#       - name: Install dependencies
-#         run: |
-#           pip install -r requirements.txt  
-
-#       - name: Run MLflow tracking script
-#         env:
-#           AWS_ACCESS_KEY_ID: ${{ test }}  # Set AWS credentials in GitHub secrets
-#           AWS_SECRET_ACCESS_KEY: ${{ test }}
-#         run: |
-#           python train_model.py 
-#       - name: Upload artifacts to S3
-#         run: |
-#           aws s3 cp model.pkl s3://my-iris-bucket/models/model.pkl --endpoint-url http://localhost:4566  
-
+      - name: Run MLflow tracking script
+        env:
+          AWS_ACCESS_KEY_ID: ${{ test }}  # Set AWS credentials in GitHub secrets
+          AWS_SECRET_ACCESS_KEY: ${{ test }}
+        run: |
+          python train_model.py 
+      - name: Upload artifacts to S3
+        run: |
+          aws s3 cp model.pkl s3://my-iris-bucket/models/model.pkl --endpoint-url http://localhost:4566  
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # name: Train and Track Model with MLflow
 
 # on:
