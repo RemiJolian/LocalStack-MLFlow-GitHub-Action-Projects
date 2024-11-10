@@ -45,7 +45,7 @@ with mlflow.start_run():
     # Log param- the model has no param, here
     mlflow.log_param("only-test", 0.00)
 
-    # Save the model as an artifact
+    # Save the model as an artifact.
     #mlflow.sklearn.log_model(model, "decision_tree_model")
     mlflow.sklearn.log_model(model, artifact_path="model")
 
