@@ -7,10 +7,15 @@ import mlflow
 import boto3
 # from sklearn.model_selection import train_test_split
 
-mlflow.set_experiment("Basic-DecisionTree")
 
 #mlflow.set_tracking_uri("My-Machine-Learning-Projects\My-Proj1-LocalStack-MLFlow-GitHub-Action\mlruns")
 mlflow.set_tracking_uri("http://localhost:5000")
+
+
+experiments = mlflow.search_experiments()
+for exp in experiments:
+    print(f"Experiment ID: {exp.experiment_id}, Name: {exp.name}")
+
 
 #X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
@@ -34,6 +39,7 @@ with open("model.pkl", 'wb') as model_file:
 #     accuracy_file.write(f"Accuracy of training: {accuracy_train}")
 
 with mlflow.start_run():
+    mlflow.set_experiment("Basic-DecisionTree")
     # Log accuracy metric
     mlflow.log_metric("accuracy", accuracy_train)
     # Log param- the model has no param, here
