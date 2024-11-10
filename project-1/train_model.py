@@ -34,7 +34,7 @@ accuracy_train = accuracy_score(prediction_train, y)
 with open("model.pkl", 'wb') as model_file:
     pickle.dump(model, model_file)
 
-# # Save the accuracy value to a text file
+# Save the accuracy value to a text file
 # with open("accuracy.txt", "w") as accuracy_file:
 #     accuracy_file.write(f"Accuracy of training: {accuracy_train}")
 
