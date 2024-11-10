@@ -48,6 +48,11 @@ jobs:
       run: |
         aws --endpoint-url=http://localhost:4566 s3 mb s3://my-iris-bucket
 
+    - name: Upload Artifacts to LocalStack S3 # Remi add
+      run: |
+        aws --endpoint-url=http://127.0.0.1:4566 s3 sync mlflow_server/artifacts s3://my-iris-bucket/models/
+
+
     - name: Run Training Script
       run: python project-1/train_model.py
 
