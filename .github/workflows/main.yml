@@ -1,4 +1,3 @@
-
 name: MLflow Model Tracking
 
 on:
@@ -21,7 +20,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt  
+          pip install -r project-1/requirements.txt  
 
       - name: Run MLflow tracking script
         env:
