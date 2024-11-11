@@ -7,7 +7,17 @@ import mlflow
 import boto3
 # from sklearn.model_selection import train_test_split
 
-mlflow.set_experiment("Basic-DecisionTree")
+# Define experiment name
+experiment_name = "Basic-DecisionTree"
+
+# Check if experiment exists; if not, create it
+try:
+    experiment_id = mlflow.create_experiment(experiment_name)
+except mlflow.exceptions.MlflowException:
+    # Experiment already exists, get its ID
+    experiment_id = mlflow.get_experiment_by_name(experiment_name).experiment_id
+
+mlflow.set_experiment(experiment_name)
 
 #mlflow.set_tracking_uri("My-Machine-Learning-Projects\My-Proj1-LocalStack-MLFlow-GitHub-Action\mlruns")
 mlflow.set_tracking_uri("http://127.0.0.1:5000")
@@ -54,7 +64,7 @@ with mlflow.start_run():
 # Initialize S3 resource to upload the .pkl file to LocalStack's S3
 s3_resource = boto3.resource('s3', endpoint_url='http://127.0.0.1:4566')
 
-bucket_name = "my-iris-bucket"
+bucket_name = "my-bucket"
 
 if not s3_resource.Bucket(bucket_name) in s3_resource.buckets.all():
     s3_resource.create_bucket(Bucket=bucket_name)
