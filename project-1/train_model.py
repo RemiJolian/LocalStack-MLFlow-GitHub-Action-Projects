@@ -48,29 +48,32 @@ with open("model.pkl", 'wb') as model_file:
 # Save the accuracy value to a text file
 # with open("accuracy.txt", "w") as accuracy_file:
 #     accuracy_file.write(f"Accuracy of training: {accuracy_train}")
+try:
+    with mlflow.start_run(experiment_id=experiment_id):
+        # Log accuracy metric
+        mlflow.log_metric("accuracy", accuracy_train)
+        # Log param- the model has no param, here
+        mlflow.log_param("only-test", 0.00)
+    
+        # Save the model as an artifact.
+        #mlflow.sklearn.log_model(model, "decision_tree_model")
+        mlflow.sklearn.log_model(model, artifact_path="model")
+    
+        print(f"Accuracy of training: {accuracy_train}")
+except Exception as e:
+    print(f"Failed to log to MLflow: {e}")
 
-with mlflow.start_run(experiment_id=experiment_id):
-    # Log accuracy metric
-    mlflow.log_metric("accuracy", accuracy_train)
-    # Log param- the model has no param, here
-    mlflow.log_param("only-test", 0.00)
 
-    # Save the model as an artifact.
-    #mlflow.sklearn.log_model(model, "decision_tree_model")
-    mlflow.sklearn.log_model(model, artifact_path="model")
+## Initialize S3 resource to upload the .pkl file to LocalStack's S3
+#s3_resource = boto3.resource('s3', endpoint_url='http://127.0.0.1:4566')
 
-    print(f"Accuracy of training: {accuracy_train}")
+#bucket_name = "my-bucket"
 
-# Initialize S3 resource to upload the .pkl file to LocalStack's S3
-s3_resource = boto3.resource('s3', endpoint_url='http://127.0.0.1:4566')
+#if not s3_resource.Bucket(bucket_name) in s3_resource.buckets.all():
+    #s3_resource.create_bucket(Bucket=bucket_name)
 
-bucket_name = "my-bucket"
-
-if not s3_resource.Bucket(bucket_name) in s3_resource.buckets.all():
-    s3_resource.create_bucket(Bucket=bucket_name)
-
-# Upload model file to S3 bucket
-s3_resource.Bucket(bucket_name).upload_file('model.pkl', 'models/model.pkl')
+## Upload model file to S3 bucket
+#s3_resource.Bucket(bucket_name).upload_file('model.pkl', 'models/model.pkl')
 
 # Upload accuracy.txt to S3 bucket
 # s3_resource.Bucket(bucket_name).upload_file('accuracy.txt', 'models/accuracy.txt')
