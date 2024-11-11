@@ -20,12 +20,12 @@ except mlflow.exceptions.MlflowException:
 mlflow.set_experiment(experiment_name)
 
 #mlflow.set_tracking_uri("My-Machine-Learning-Projects\My-Proj1-LocalStack-MLFlow-GitHub-Action\mlruns")
-mlflow.set_tracking_uri("http://127.0.0.1:5000")
+#mlflow.set_tracking_uri("http://127.0.0.1:5000")
 
 
-experiments = mlflow.search_experiments()
-for exp in experiments:
-    print(f"Experiment ID: {exp.experiment_id}, Name: {exp.name}")
+# experiments = mlflow.search_experiments()
+# for exp in experiments:
+#     print(f"Experiment ID: {exp.experiment_id}, Name: {exp.name}")
 
 
 #X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
@@ -49,7 +49,7 @@ with open("model.pkl", 'wb') as model_file:
 # with open("accuracy.txt", "w") as accuracy_file:
 #     accuracy_file.write(f"Accuracy of training: {accuracy_train}")
 
-with mlflow.start_run():
+with mlflow.start_run(experiment_id=experiment_id):
     # Log accuracy metric
     mlflow.log_metric("accuracy", accuracy_train)
     # Log param- the model has no param, here
