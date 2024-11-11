@@ -7,23 +7,24 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   train_and_track:
     runs-on: ubuntu-latest
 
-    services:
-      localstack:
-        image: localstack/localstack
-        ports:
-          - 4566:4566  # S3 and other services on LocalStack
+    # services:
+    #   localstack:
+    #     image: localstack/localstack
+    #     ports:
+    #       - 4566:4566  # S3 and other services on LocalStack
 
-    env:
-      AWS_ACCESS_KEY_ID: test
-      AWS_SECRET_ACCESS_KEY: test
-      AWS_DEFAULT_REGION: us-east-1
-      MLFLOW_S3_ENDPOINT_URL: http://127.0.0.1:4566
-      MLFLOW_TRACKING_URI: http://127.0.0.1:5000
+    # env:
+    #   AWS_ACCESS_KEY_ID: test
+    #   AWS_SECRET_ACCESS_KEY: test
+    #   AWS_DEFAULT_REGION: us-east-1
+    #   MLFLOW_S3_ENDPOINT_URL: http://127.0.0.1:4566
+    #   MLFLOW_TRACKING_URI: http://127.0.0.1:5000
 
     steps:
     - name: Checkout Repository
@@ -41,15 +42,37 @@ jobs:
 
     - name: Start MLflow Server
       run: |
-        nohup mlflow server --backend-store-uri sqlite:///mlflow.db --default-artifact-root s3://my-iris-bucket/ --host 127.0.0.1 &
-        sleep 10  # Allow time for MLflow server to start
+        nohup mlflow server \
+          --backend-store-uri sqlite:///mlflow.db \
+          --default-artifact-root ./mlruns \
+          --host 127.0.0.1 &
+          sleep 5
+          
+        # nohup mlflow server \
+        # --backend-store-uri sqlite:///mlflow.db \
+        # --default-artifact-root ./mlruns \
+        # s3://my-iris-bucket/ \
+        # --host 127.0.0.1 &
+        # sleep 7  # Allow time for MLflow server to start
 
-    - name: Set Up LocalStack S3 Bucket
-      run: |
-        aws --endpoint-url=http://localhost:4566 s3 mb s3://my-iris-bucket
+    # - name: Set Up LocalStack S3 Bucket
+    #   run: |
+    #     aws --endpoint-url=http://localhost:4566 s3 mb s3://my-iris-bucket
 
     - name: Run Training Script
       run: python project-1/train_model.py
+
+    - name: Upload MLflow Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: mlflow-artifacts
+        path: ./mlruns
+
+    - name: Upload MLflow Database
+      uses: actions/upload-artifact@v3
+      with:
+        name: mlflow-db
+        path: mlflow.db  
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # name: Train and Track Model with MLflow
